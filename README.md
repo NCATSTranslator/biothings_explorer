@@ -1,9 +1,10 @@
 # BioThings Explorer
 
-[![Build Status](https://travis-ci.org/biothings/biothings_explorer.svg?branch=master)](https://travis-ci.org/biothings/biothings_explorer)
+![Test BioThings Explorer Python Package](https://github.com/biothings/biothings_explorer/workflows/Test%20BioThings%20Explorer%20Python%20Package/badge.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1213cfd2b04948e792e6f122944a4c5a)](https://app.codacy.com/gh/biothings/biothings_explorer?utm_source=github.com&utm_medium=referral&utm_content=biothings/biothings_explorer&utm_campaign=Badge_Grade_Dashboard)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/1213cfd2b04948e792e6f122944a4c5a)](https://app.codacy.com/gh/biothings/biothings_explorer?utm_source=github.com&utm_medium=referral&utm_content=biothings/biothings_explorer&utm_campaign=Badge_Coverage_Dashboard)
 [![Documentation Status](https://readthedocs.org/projects/biothings-explorer/badge/?version=latest)](https://biothings-explorer.readthedocs.io/en/latest/?badge=latest)
+![PyPI](https://img.shields.io/pypi/v/biothings-explorer)
 
 ## Introduction
 
@@ -71,4 +72,6 @@ Some real world use cases of BioThings Explorer.
    - [Finding New Uses for Existing Drugs to Treat Parkinson’s Disease](https://colab.research.google.com/github/biothings/biothings_explorer/blob/master/jupyter%20notebooks/TIDBIT%2002%20Finding%20New%20Uses%20for%20Existing%20Drugs%20to%20Treat%20Parkinson%E2%80%99s%20Disease.ipynb)
    - [Finding Marketed Drugs that Might Treat an Unknown Syndrome by Perturbing the Disease Mechanism Pathway](https://colab.research.google.com/github/biothings/biothings_explorer/blob/master/jupyter%20notebooks/TIDBIT%2004%20Finding%20Marketed%20Drugs%20that%20Might%20Treat%20an%20Unknown%20Syndrome%20by%20Perturbing%20the%20Disease%20Mechanism%20Pathway.ipynb)
 
+#### Using the TRAPI Endpoint of BTE through Python Client
 
+Please refer to detailed tutorial located at [here](https://github.com/biothings/biothings_explorer/tree/master/biothings_explorer/trapi)

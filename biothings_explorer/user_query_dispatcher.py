@@ -66,7 +66,9 @@ class SingleEdgeQueryDispatcher:
         query_id=1,
         reverse=False,
         registry=None,
+        loop=None,
     ):
+        self.loop = loop
         # load bte registry
         if not registry:
             self.registry = Registry()
@@ -134,7 +136,7 @@ class SingleEdgeQueryDispatcher:
         if not self.equivalent_ids:
             # find equivalent ids for the input value
             equivalent_ids = self.idr.resolve_ids(
-                [(self.values, self.input_id, self.input_cls)]
+                [(self.values, self.input_id, self.input_cls)], loop=self.loop
             )
             if not self.input_label:
                 self.input_label = self.input_id + ":" + values
@@ -194,6 +196,9 @@ class SingleEdgeQueryDispatcher:
                 # check if the identifier matches the id type specified by the
                 # user or the default id type
                 if self.output_id and identifier not in self.output_id:
+                    # if equivalent_ids doesn't exist then print error message
+                    if "equivalent_ids" not in self.G.nodes[n2]:
+                        print("ID resolution steps failed:")
                     equivalent_ids = self.G.nodes[n2]["equivalent_ids"]
                     # find the corresponding id from the equivalent id dict
                     new_vals = None
@@ -373,7 +378,7 @@ class SingleEdgeQueryDispatcher:
             return
         source_nodes_cnt = len(self.G)
         # make API calls and restructure API outputs
-        (_res, log) = self.dp.dispatch(input_edges, verbose=verbose)
+        (_res, log) = self.dp.dispatch(input_edges, verbose=verbose, loop=self.loop)
         self.log += log
         # load API outputs into the MultiDiGraph
         self.G = load_res_to_networkx(
@@ -653,13 +658,17 @@ class Explain:
             self.G = merge_two_networkx_graphs(self.G, self.seqd[2].G)
             self.sub_G = self.sub_graph()
             self.current_graph = self.seqd[2].current_graph
+            if len(self.sub_G) <= 2:
+                intermediate_cnt = 0
+            else:
+                intermediate_cnt = len(self.sub_G) - 2
             if verbose:
                 print("\n==========")
                 print("========== Final assembly of results ==========")
                 print("==========\n\n")
                 print(
                     "BTE found {} unique intermediate nodes connecting '{}' and '{}'".format(
-                        len(self.sub_G), self.starts, self.ends
+                        intermediate_cnt, self.starts, self.ends
                     )
                 )
             self.log.append("\n==========")
@@ -667,7 +676,7 @@ class Explain:
             self.log.append("==========\n\n")
             self.log.append(
                 "BTE found {} unique intermediate nodes connecting '{}' and '{}'".format(
-                    len(self.sub_G), self.starts, self.ends
+                    intermediate_cnt, self.starts, self.ends
                 )
             )
 
@@ -833,8 +842,7 @@ class Predict:
             print("========== QUERY PARAMETER SUMMARY ==========")
             print("==========\n")
             print(
-                "BTE will find paths that join '{}' and '{}'. \
-                  Paths will have {} intermediate node.\n".format(
+                "BTE will find paths that join '{}' and '{}'. Paths will have {} intermediate node.\n".format(
                     self.starts, self.ends, len(self.intermediate_nodes)
                 )
             )
@@ -848,8 +856,7 @@ class Predict:
         self.log.append("========== QUERY PARAMETER SUMMARY ==========")
         self.log.append("==========\n")
         self.log.append(
-            "BTE will find paths that join '{}' and '{}'. \
-                  Paths will have {} intermediate node.\n".format(
+            "BTE will find paths that join '{}' and '{}'. Paths will have {} intermediate node.\n".format(
                 self.starts, self.ends, len(self.intermediate_nodes)
             )
         )
